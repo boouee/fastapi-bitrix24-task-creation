@@ -14,6 +14,19 @@ app = FastAPI()
 
 #templates = Jinja2Templates(directory="templates")
 
+@app.post('/api/cartesia')
+async def cartesia_handler():
+    try:
+        body = await request.body()
+        print(unquote(body))
+        form_data = await request.form()
+        form_data = dict(form_data)
+        print(form_data)
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
+        return e
+        
 @app.get('/api/update')
 async def get_handler():
     try:
