@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from typing import Annotated
 from api.functions import collab_created_handler, check_collabs
+from api.functions import cartesia_call_handler
 import multipart
 import re
 import traceback
