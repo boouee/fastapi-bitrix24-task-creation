@@ -34,6 +34,7 @@ async def create_lead(client, data):
   return response["result"]
 
 async def get_metric(client, metric_id, call_id):
+  url = cartesia_url + "
   ...
 async def collab_created_handler(id):
   print(redis_url)
