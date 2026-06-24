@@ -15,10 +15,11 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=".env.local")
 redis_url = os.getenv("REDIS_URL")
+cartesia_api_key = os.getenv("CARTESIA_API_KEY")
 bitrix24_url = os.getenv("BITRIX24_URL")
 cartesia_headers = {
   "Content-Type": "application/json",
-  "X-API-Key": "sk_car_F8fhNz7AKebsimYgU6wCiF",
+  "X-API-Key": cartesia_api_key,
   "Cartesia-Version": "2026-03-01"
 }
 template_list = [1, 2, 3]
@@ -34,7 +35,9 @@ async def create_lead(client, data):
   return response["result"]
 
 async def get_metric(client, metric_id, call_id):
-  url = cartesia_url + "
+  url = f"{cartesia_url}?metric_id={metric_id}&call_id={call_id}"
+  response = await client.get(url)
+  response = response.json()
   ...
 async def collab_created_handler(id):
   print(redis_url)
