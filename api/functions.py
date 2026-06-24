@@ -95,6 +95,9 @@ async def get_all_metrics(client, call_id):
   metric_values = {}
   for metric in metrics:
     metric_values[metric["name"]] = await get_metric(client, metric["id"], call_id)
+    if not isinstance(metric_values["succeed"], bool):
+      metric_values = await get_all_metrics(client, call_id)
+      break
   return metric_values
   
 async def get_metric(client, metric_id, call_id):
