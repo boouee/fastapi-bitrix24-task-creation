@@ -31,6 +31,9 @@ async def cartesia_handler(request: Request):
             )
         body = await request.body()
         print(unquote(body))
+        data = unquote(body)
+        if data["type"] == "post_call_analysis":
+            await cartesia_call_handler(data["call_id"])
         form_data = await request.form()
         form_data = dict(form_data)
         print(form_data)
