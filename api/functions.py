@@ -16,7 +16,11 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path=".env.local")
 redis_url = os.getenv("REDIS_URL")
 bitrix24_url = os.getenv("BITRIX24_URL")
-
+cartesia_headers = {
+  "Content-Type": "application/json",
+  "X-API-Key": "sk_car_F8fhNz7AKebsimYgU6wCiF",
+  "Cartesia-Version": "2026-03-01"
+}
 template_list = [1, 2, 3]
 
 async def cartesia_call_handler(data):
