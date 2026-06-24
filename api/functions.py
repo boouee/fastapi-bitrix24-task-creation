@@ -53,7 +53,14 @@ async def cartesia_call_handler(call_id):
   async with httpx.AsyncClient() as client:
     metric_values = await get_all_metrics(client, call_id)
     if metric_values["success"] == "true":
-      await create_deal
+      title = metric_values["company_name"]
+      comments = f"""
+        Название компании: {metric_values["company_name"]}
+        Род деятельности: {metric_values["occupation"]}
+        Размер: {metric_values["company_size"]}
+        Способ связи: {metric_values["connection_way"]}
+      """
+      await create_deal(client, title, comments)
 
 async def create_deal(client, title, comments):
   url = bitrix24_url + "crm.item.add"
