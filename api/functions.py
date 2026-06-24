@@ -24,7 +24,7 @@ async def cartesia_call_handler(data):
 
 async def create_lead(client, data):
   url = bitrix24_url + "crm.item.add"
-  body = {"entityTypeId": 1, "fields": {"groupId": id} }
+  body = {"entityTypeId": 1, "fields": {"title": title} }
   response = await client.post(url, json=body)
   response = response.json()
   return response["result"]
