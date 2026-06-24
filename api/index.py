@@ -29,10 +29,10 @@ async def cartesia_handler(request: Request):
               status_code=status.HTTP_401_CREATED,
               content=json_compatible_data
             )
-        body = await request.body()
+        json = await request.json()
         print(unquote(body))
         data = unquote(body)
-        if data["type"] == "post_call_analysis":
+        if json["type"] == "post_call_analysis":
             await cartesia_call_handler(data["call_id"])
         form_data = await request.form()
         form_data = dict(form_data)
