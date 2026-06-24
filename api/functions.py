@@ -74,7 +74,7 @@ async def cartesia_call_handler(call_id):
     time.sleep(10)
     metric_values = await get_all_metrics(client, call_id)
     print(metric_values)
-    if metric_values["success"] == True:
+    if metric_values["succeed"] == True:
       title = metric_values["company_name"]
       comments = f"""
         Название компании: {metric_values["company_name"]}
