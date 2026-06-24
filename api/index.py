@@ -29,6 +29,7 @@ async def cartesia_handler(request: Request):
               status_code=status.HTTP_401_CREATED,
               content=json_compatible_data
             )
+        body = await request.body()
         json = await request.json()
         print(unquote(body))
         data = unquote(body)
