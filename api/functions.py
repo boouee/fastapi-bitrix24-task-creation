@@ -23,22 +23,57 @@ cartesia_headers = {
   "Cartesia-Version": "2026-03-01"
 }
 template_list = [1, 2, 3]
+metrics = [
+    {
+      "id": "am_cb9NPak2B3LVnX1S84VFUF",
+      "name": "connection_way",
+      "created_at": "2026-06-23T18:59:28.975Z",
+      "prompt": "Какой способ был выбран для обратной связи?"
+    },
+    {
+      "id": "am_NehJbWxNezf6HNmW5ej5ir",
+      "name": "connection_time",
+      "created_at": "2026-06-23T18:58:34.042Z",
+      "prompt": "На какой день назначена обратная связь?"
+    },
+    {
+      "id": "am_T1rdKjAn3xKgQGNzstTfe6",
+      "name": "success",
+      "created_at": "2026-06-23T18:56:06.539Z",
+      "prompt": "Удалось ли договориться о звонке?"
+    },
+    {
+      "id": "am_MJpPbsUUiFsYBfxZSy19Sa",
+      "name": "company_name",
+      "created_at": "2026-06-23T18:54:17.685Z",
+      "prompt": "Название компании, куда позвонили из Smart Business. Без перевода на русский."
+    }
+]
+async def cartesia_call_handler(call_id):
+  async with httpx.AsyncClient() as client:
+    metric_values = await get_all_metrics(client, call_id)
+    if metric_values["success"] == "true":
+      await create_deal
 
-async def cartesia_call_handler(data):
-  ...
-
-async def create_lead(client, data):
+async def create_deal(client, title, comments):
   url = bitrix24_url + "crm.item.add"
-  body = {"entityTypeId": 1, "fields": {"title": title} }
+  body = {"entityTypeId": 2, "fields": {"title": title, "comments": comments} }
   response = await client.post(url, json=body)
   response = response.json()
   return response["result"]
 
+async def get_all_metrics(client, call_id):
+  metric_values = {}
+  for metric in metrics:
+    metric_values[metric["name"]] = await get_metric(client, metric["id"], call_id)
+  return metric_values
+  
 async def get_metric(client, metric_id, call_id):
   url = f"{cartesia_url}?metric_id={metric_id}&call_id={call_id}"
   response = await client.get(url)
   response = response.json()
   ...
+  
 async def collab_created_handler(id):
   print(redis_url)
   r = redis.Redis.from_url(redis_url, decode_responses=True)
