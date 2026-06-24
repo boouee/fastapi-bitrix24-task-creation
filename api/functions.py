@@ -64,6 +64,7 @@ metrics = [
 async def cartesia_call_handler(call_id):
   async with httpx.AsyncClient() as client:
     metric_values = await get_all_metrics(client, call_id)
+    print(metric_values)
     if metric_values["success"] == "true":
       title = metric_values["company_name"]
       comments = f"""
@@ -91,6 +92,7 @@ async def get_metric(client, metric_id, call_id):
   url = f"{cartesia_url}?metric_id={metric_id}&call_id={call_id}"
   response = await client.get(url)
   response = response.json()
+  return response["data"][0]["value"]
   ...
   
 async def collab_created_handler(id):
