@@ -93,6 +93,7 @@ async def get_metric(client, metric_id, call_id):
   url = f"{cartesia_url}?metric_id={metric_id}&call_id={call_id}"
   response = await client.get(url=url, headers=cartesia_headers)
   response = response.json()
+  print(response)
   return response["data"][0]["value"]
   ...
   
