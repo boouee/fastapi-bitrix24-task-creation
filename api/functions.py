@@ -1,6 +1,7 @@
 from urllib.parse import unquote
 from datetime import datetime, timedelta
 import httpx
+import time
 import re
 import math
 import numbers
@@ -64,6 +65,7 @@ metrics = [
 ]
 async def cartesia_call_handler(call_id):
   async with httpx.AsyncClient() as client:
+    time.sleep(10)
     metric_values = await get_all_metrics(client, call_id)
     print(metric_values)
     if metric_values["success"] == True:
