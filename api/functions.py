@@ -22,6 +22,7 @@ cartesia_headers = {
   "X-API-Key": cartesia_api_key,
   "Cartesia-Version": "2026-03-01"
 }
+cartesia_url = "https://api.cartesia.ai/agents/metrics/results"
 template_list = [1, 2, 3]
 metrics = [
     {
