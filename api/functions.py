@@ -27,6 +27,12 @@ cartesia_url = "https://api.cartesia.ai/agents/metrics/results"
 template_list = [1, 2, 3]
 metrics = [
     {
+      "id": "am_Q7eZkeiKFif73pfxjRuYFs",
+      "name": "succeed",
+      "created_at": "2026-06-24T17:26:41.314Z",
+      "prompt": "Удалось ли договориться о способе обратной связи?"
+    },
+    {
       "id": "am_Qim5EaqWUdLyPAhhM4f7cN",
       "name": "occupation",
       "created_at": "2026-06-24T13:52:31.162Z",
