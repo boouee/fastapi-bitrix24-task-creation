@@ -19,7 +19,18 @@ bitrix24_url = os.getenv("BITRIX24_URL")
 
 template_list = [1, 2, 3]
 
+async def cartesia_call_handler(data):
+  ...
 
+async def create_lead(client, data):
+  url = bitrix24_url + "socialnetwork.api.workgroup.get"
+  body = {"params": {"groupId": id} }
+  response = await client.post(url, json=body)
+  response = response.json()
+  return response["result"]
+
+async def get_metric(client, metric_id, call_id):
+  ...
 async def collab_created_handler(id):
   print(redis_url)
   r = redis.Redis.from_url(redis_url, decode_responses=True)
