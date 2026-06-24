@@ -25,6 +25,18 @@ cartesia_headers = {
 template_list = [1, 2, 3]
 metrics = [
     {
+      "id": "am_Qim5EaqWUdLyPAhhM4f7cN",
+      "name": "occupation",
+      "created_at": "2026-06-24T13:52:31.162Z",
+      "prompt": "Род деятельности компании, которой позвонили "
+    },
+    {
+      "id": "am_bNSmnSvQBEF522GdVkmCQq",
+      "name": "company_size",
+      "created_at": "2026-06-24T13:51:31.402Z",
+      "prompt": "Размер компании, которой позвонили"
+    },
+    {
       "id": "am_cb9NPak2B3LVnX1S84VFUF",
       "name": "connection_way",
       "created_at": "2026-06-23T18:59:28.975Z",
