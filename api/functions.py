@@ -94,7 +94,11 @@ async def get_metric(client, metric_id, call_id):
   response = await client.get(url=url, headers=cartesia_headers)
   response = response.json()
   print(response)
-  return response["data"][0]["value"]
+  data = response["data"]
+  if data:
+    return response["data"][0]["value"]
+  else: 
+    return null
   ...
   
 async def collab_created_handler(id):
