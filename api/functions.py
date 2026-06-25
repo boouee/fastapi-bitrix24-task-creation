@@ -86,7 +86,7 @@ async def cartesia_call_handler(call_id):
 
 async def create_deal(client, title, comments):
   url = bitrix24_url + "crm.item.add"
-  body = {"entityTypeId": 2, "fields": {"title": title, "comments": comments} }
+  body = {"entityTypeId": 2, "fields": {"title": title, "comments": comments, "assignedById": 17055} }
   response = await client.post(url, json=body)
   response = response.json()
   return response["result"]
