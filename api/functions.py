@@ -16,59 +16,9 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=".env.local")
 redis_url = os.getenv("REDIS_URL")
-cartesia_api_key = os.getenv("CARTESIA_API_KEY")
-bitrix24_url = os.getenv("BITRIX24_URL")
-cartesia_headers = {
-  "Content-Type": "application/json",
-  "X-API-Key": cartesia_api_key,
-  "Cartesia-Version": "2026-03-01"
-}
-cartesia_url = "https://api.cartesia.ai/agents/metrics/results"
-template_list = [1, 2, 3]
-metrics = [
-    {
-      "id": "am_Q7eZkeiKFif73pfxjRuYFs",
-      "name": "succeed",
-      "created_at": "2026-06-24T17:26:41.314Z",
-      "prompt": "Удалось ли договориться о способе обратной связи?"
-    },
-    {
-      "id": "am_Qim5EaqWUdLyPAhhM4f7cN",
-      "name": "occupation",
-      "created_at": "2026-06-24T13:52:31.162Z",
-      "prompt": "Род деятельности компании, которой позвонили "
-    },
-    {
-      "id": "am_bNSmnSvQBEF522GdVkmCQq",
-      "name": "company_size",
-      "created_at": "2026-06-24T13:51:31.402Z",
-      "prompt": "Размер компании, которой позвонили"
-    },
-    {
-      "id": "am_cb9NPak2B3LVnX1S84VFUF",
-      "name": "connection_way",
-      "created_at": "2026-06-23T18:59:28.975Z",
-      "prompt": "Какой способ был выбран для обратной связи?"
-    },
-    {
-      "id": "am_NehJbWxNezf6HNmW5ej5ir",
-      "name": "connection_time",
-      "created_at": "2026-06-23T18:58:34.042Z",
-      "prompt": "На какой день назначена обратная связь?"
-    },
-    {
-      "id": "am_T1rdKjAn3xKgQGNzstTfe6",
-      "name": "success",
-      "created_at": "2026-06-23T18:56:06.539Z",
-      "prompt": "Удалось ли договориться о звонке?"
-    },
-    {
-      "id": "am_MJpPbsUUiFsYBfxZSy19Sa",
-      "name": "company_name",
-      "created_at": "2026-06-23T18:54:17.685Z",
-      "prompt": "Название компании, куда позвонили из Smart Business. Без перевода на русский."
-    }
-]
+#cartesia_api_key = os.getenv("CARTESIA_API_KEY")
+bitrix24_url = os.getenv("B24_WEBHOOK")
+
 async def cartesia_call_handler(call_id):
   async with httpx.AsyncClient() as client:
     time.sleep(10)
