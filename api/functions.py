@@ -19,6 +19,24 @@ redis_url = os.getenv("REDIS_URL")
 #cartesia_api_key = os.getenv("CARTESIA_API_KEY")
 bitrix24_url = os.getenv("B24_WEBHOOK")
 
+async def get_deal_fields(client, deal_id):
+  ...
+
+async def create_task(client, fields):
+  ...
+
+async def send_notification(client, deal):
+  ...
+
+async def update_deal(client, deal_id):
+  ...
+
+async def check_task(client, task_id):
+  ...
+
+async def return_task_to_work(client, task_id):
+  ...
+
 async def cartesia_call_handler(call_id):
   async with httpx.AsyncClient() as client:
     time.sleep(10)
