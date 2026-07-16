@@ -7,13 +7,9 @@ from typing import Annotated
 import multipart
 import re
 import traceback
-
-#from api.handlers import set_time, update, clear_keys, hash_password
 from urllib.parse import unquote, urlparse
 
 app = FastAPI()
-
-#templates = Jinja2Templates(directory="templates")
 
 @app.post('/api/cartesia')
 async def cartesia_handler(request: Request):
