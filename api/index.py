@@ -42,8 +42,8 @@ async def cartesia_handler(request: Request):
         traceback.print_exc()
         return e
         
-@app.get('/api/update')
-async def get_handler():
+@app.post('/api/deal_in_stage')
+async def deal_in_stage_handler():
     try:
         result = await check_collabs()
         return result 
@@ -52,8 +52,8 @@ async def get_handler():
         traceback.print_exc()
         return e
         
-@app.post('/api/collab_added')
-async def new_collab_handler(request: Request):
+@app.post('/api/task_complete')
+async def task_complete_handler(request: Request):
     try:
         body = await request.body()
         print(unquote(body))
