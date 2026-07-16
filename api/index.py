@@ -27,8 +27,6 @@ async def cartesia_handler(request: Request):
         json = await request.json()
         print(unquote(body))
         data = unquote(body)
-        if json["type"] == "post_call_analysis":
-            await cartesia_call_handler(json["call_id"])
         form_data = await request.form()
         form_data = dict(form_data)
         print(form_data)
@@ -39,10 +37,11 @@ async def cartesia_handler(request: Request):
         return e
         
 @app.post('/api/deal_in_stage')
-async def deal_in_stage_handler():
+async def deal_in_stage_handler(request: Request):
     try:
-        result = await check_collabs()
-        return result 
+        form_data = await request.form()
+        form_data = dict(form_data)
+        print(form_data)
     except Exception as e:
         print(e)
         traceback.print_exc()
@@ -55,21 +54,7 @@ async def task_complete_handler(request: Request):
         print(unquote(body))
         form_data = await request.form()
         form_data = dict(form_data)
-        result = await collab_created_handler(form_data["data[FIELDS][ID]"])
-        return result
-    except Exception as e:
-        print(e)
-        traceback.print_exc()
-        return e
-
-@app.post('/api/task_updated')
-async def task_updated(request: Request):
-    try:
-        body = await request.body()
-        print(unquote(body))
-        form_data = await request.form()
-        form_data = dict(form_data)
-        #result = await collab_update_handler(form_data["data[FIELDS][ID]"])
+        #result = await collab_created_handler(form_data["data[FIELDS][ID]"])
         #return result
     except Exception as e:
         print(e)
