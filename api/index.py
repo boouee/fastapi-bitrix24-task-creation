@@ -4,8 +4,6 @@ from fastapi.templating import Jinja2Templates
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from typing import Annotated
-from api.functions import collab_created_handler, check_collabs
-from api.functions import cartesia_call_handler
 import multipart
 import re
 import traceback
@@ -81,31 +79,3 @@ async def task_updated(request: Request):
         print(e)
         traceback.print_exc()
         return e
-        
-@app.get('/api/index', response_class=HTMLResponse)
-async def read_index():
-    return HTMLResponse(html)
-
-html = """
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Запись на прием</title>
-    <script src="https://ilabvr.infoclinica.ru/assets/javascripts/embedded/embedded.build.min.js"></script> 
-</head>
-<body>
-    <button id="createAppointment">Запись</button>
-    <div id="container"></div>
-    <p>This page is rendered using Jinja2 template.</p>
-    <script> 
-        //window.widget = new WrEmbedded({container: document.getElementById("container")}); 
-    </script> 
-    <script> 
-        button = document.getElementById("createAppointment");
-        button.addEventListener("click", (e)=> {
-           modalWidget = new WrEmbedded({path: "/schedule?filial=1&departments=1&doctors=524&modal=true", modal: true}) 
-        })
-    </script>
-</body>
-</html>
-"""
