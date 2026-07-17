@@ -4,4 +4,4 @@ dotenv
 packaging
 redis
 python-multipart
-jinja2
+b24pysdk
