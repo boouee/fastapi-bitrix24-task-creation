@@ -9,6 +9,7 @@ import re
 import traceback
 from urllib.parse import unquote, urlparse
 from api.functions import main
+from api.html import html
 
 app = FastAPI()
 
@@ -41,7 +42,4 @@ async def task_complete_handler(request: Request):
 
 @app.get("/api/edit_preparations")
 async def edit_preparations(request: Request):
-    return templates.TemplateResponse(
-        "index.html", 
-        {"request": request, "title": "Home Page", "message": "Hello!"}
-    )
+    return html
