@@ -17,7 +17,7 @@ async def deal_in_stage_handler(request: Request):
         form_data = await request.form()
         form_data = dict(form_data)
         print(form_data)
-        deal_id = form_data["document_id[2]"][5:]
+        deal_id = int(form_data["document_id[2]"][5:])
         await main(deal_id)
     except Exception as e:
         print(e)
