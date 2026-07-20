@@ -33,11 +33,11 @@ async def get_deal_fields(client, deal_id):
   bitrix_response = client.crm.deal.get(bitrix_id=deal_id).response
   result = bitrix_response.result
   print(result)
-  return {}
+  return {"TITLE": "TITLE", "RESPONSIBLE_ID":1}
   
 async def create_task(client, fields):
   
-  bitrix_response = client.tasks.add(fields=fields).response
+  bitrix_response = client.tasks.taskadd(fields=fields).response
   result = bitrix_response.result
   print(result)
 
