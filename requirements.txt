@@ -5,3 +5,4 @@ packaging
 redis
 python-multipart
 b24pysdk
+jinja2
