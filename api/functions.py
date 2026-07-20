@@ -16,13 +16,14 @@ from dotenv import load_dotenv
 from b24pysdk import BitrixWebhook, Client
 
 load_dotenv(dotenv_path=".env.local")
-bitrix24_url = os.getenv("B24_WEBHOOK")
+domain = os.getenv("domain")
+webhook_token = os.getenv("webhook_token")
 bitrix_token = BitrixWebhook(
-    domain="example.bitrix24.com",
-    webhook_token="1/webhook_key",
+    domain=domain,
+    webhook_token=webhook_token,
 )
 
-client = Client(bitrix24_url)
+client = Client(bitrix_token)
 
 async def main(deal_id):
   fields = await get_deal_fields(client, deal_id)
