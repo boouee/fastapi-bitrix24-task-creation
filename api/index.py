@@ -7,6 +7,7 @@ import multipart
 import re
 import traceback
 from urllib.parse import unquote, urlparse
+from api.functions import main
 
 app = FastAPI()
 
@@ -16,7 +17,8 @@ async def deal_in_stage_handler(request: Request):
         form_data = await request.form()
         form_data = dict(form_data)
         print(form_data)
-        print(form_data["document_id[2]"][5:])
+        deal_id = form_data["document_id[2]"][5:]
+        await main(deal_id)
     except Exception as e:
         print(e)
         traceback.print_exc()
