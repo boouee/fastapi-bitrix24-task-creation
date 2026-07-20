@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from fastapi.templating import Jinja2Templates
 from typing import Annotated
 import multipart
 import re
@@ -37,3 +38,10 @@ async def task_complete_handler(request: Request):
         print(e)
         traceback.print_exc()
         return e
+
+@app.get("/api/edit_preparations")
+async def edit_preparations(request: Request):
+    return templates.TemplateResponse(
+        "index.html", 
+        {"request": request, "title": "Home Page", "message": "Hello!"}
+    )
