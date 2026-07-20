@@ -13,17 +13,32 @@ import string
 import random 
 import hashlib
 from dotenv import load_dotenv
+from b24pysdk import BitrixWebhook, Client
 
 load_dotenv(dotenv_path=".env.local")
-redis_url = os.getenv("REDIS_URL")
-#cartesia_api_key = os.getenv("CARTESIA_API_KEY")
 bitrix24_url = os.getenv("B24_WEBHOOK")
+bitrix_token = BitrixWebhook(
+    domain="example.bitrix24.com",
+    webhook_token="1/webhook_key",
+)
 
+client = Client(bitrix24_url)
+
+async def main(deal_id):
+  fields = await get_deal_fields(client, deal_id)
+  await create_task(client, fields)
+  
 async def get_deal_fields(client, deal_id):
-  ...
-
+  bitrix_response = client.crm.deal.get(bitrix_id=deal_id).response
+  result = bitrix_response.result
+  print(result)
+  return {}
+  
 async def create_task(client, fields):
-  ...
+  
+  bitrix_response = client.task.add(fields=fields).response
+  result = bitrix_response.result
+  print(result)
 
 async def send_notification(client, deal):
   ...
