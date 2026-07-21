@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адаптивный уникальный список</title>
+    <style>
+        /* Базовые стили и сброс */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        /* Адаптивный контейнер */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+        h2 { 
+            margin-bottom: 20px; 
+            font-size: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+        #list-container {
+            margin-bottom: 15px;
+        }
+        /* Flexbox-сетка для десктопа */
+        .item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        /* Инпуты адаптивно тянутся */
+        .item-select {
+            flex: 2;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            background-color: #fff;
+            font-size: 1rem;
+            min-width: 120px;
+        }
+        .item-qty {
+            flex: 1;
+            width: 100%;
+            max-width: 90px;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        /* Кнопки */
+        button {
+            font-family: inherit;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+        }
+        .btn-remove {
+            background-color: #ff4d4f;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+        .btn-remove:hover { background-color: #ff7875; }
+        
+        .btn-add {
+            background-color: #1890ff;
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .btn-add:hover { background-color: #40a9ff; }
+        
+        .btn-save {
+            background-color: #52c41a;
+            color: white;
+            padding: 14px;
+            border-radius: 6px;
+            width: 100%;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(82, 196, 26, 0.2);
+        }
+        .btn-save:hover { background-color: #73d13d; }
+
+        /* МЕДИА-ЗАПРОС ДЛЯ СМАРТФОНОВ (Экран меньше 480px) */
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            .container {
+                padding: 15px;
+                margin-top: 10px;
+                border-radius: 8px;
+            }
+            h2 {
+                font-size: 1.25rem;
+                margin-bottom: 15px;
+            }
+            /* Перестраиваем строку в колонку */
+            .item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 10px;
+            }
+            /* Элементы внутри строки занимают 100% ширины */
+            .item-select, 
+            .item-qty, 
+            .btn-remove {
+                max-width: 100%;
+                width: 100%;
+                text-align: left;
+            }
+            .item-qty {
+                text-align: left; /* Удобнее вводить на телефонах */
+            }
+            .btn-remove {
+                text-align: center;
+                margin-top: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Выбор уникальных товаров</h2>
+    <div id="list-container">
+        <!-- Сюда динамически добавляются элементы -->
+    </div>
+    <button id="add-button" class="btn-add" onclick="addItem()">+ Добавить элемент</button>
+    <button class="btn-save" onclick="saveData()">Сохранить данные</button>
+</div>
+
+<script>
+    const availableItems = {{ preparation_list | tojson }};//["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
+
+    // Изначально выбранные элементы
+    const initialItems = {{ initial_list | tojson }};
+
+    function getCurrentlySelected() {
+        const selects = document.querySelectorAll('.item-select');
+        return Array.from(selects).map(select => select.value).filter(val => val !== '');
+    }
+
+    function updateAllSelects() {
+        const selectedValues = getCurrentlySelected();
+        const rows = document.querySelectorAll('#list-container .item');
+
+        rows.forEach(row => {
+            const select = row.querySelector('.item-select');
+            const currentValue = select.value;
+
+            let optionsHTML = '';
+            availableItems.forEach(item => {
+                if (item === currentValue || !selectedValues.includes(item)) {
+                    const selected = item === currentValue ? 'selected' : '';
+                    optionsHTML += `<option value="${item}" ${selected}>${item}</option>`;
+                }
+            });
+
+            select.innerHTML = optionsHTML;
+        });
+
+        const addButton = document.getElementById('add-button');
+        if (selectedValues.length >= availableItems.length) {
+            addButton.disabled = true;
+            addButton.style.opacity = '0.5';
+            addButton.innerText = 'Все элементы выбраны';
+        } else {
+            addButton.disabled = false;
+            addButton.style.opacity = '1';
+            addButton.innerText = '+ Добавить элемент';
+        }
+    }
+
+    function addItem(productValue = '', quantityValue = 1) {
+        const container = document.getElementById('list-container');
+        const selectedValues = getCurrentlySelected();
+        
+        if (selectedValues.length >= availableItems.length && !productValue) {
+            return;
+        }
+
+        if (!productValue) {
+            productValue = availableItems.find(item => !selectedValues.includes(item)) || '';
+        }
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'item';
+        
+        itemDiv.innerHTML = `
+            <select class="item-select" onchange="updateAllSelects()">
+                <option value="${productValue}" selected>${productValue}</option>
+            </select>
+            <input type="number" class="item-qty" value="${quantityValue}" min="1" placeholder="Кол-во">
+            <button class="btn-remove" onclick="removeItem(this)">Удалить</button>
+        `;
+        
+        container.appendChild(itemDiv);
+        updateAllSelects();
+    }
+
+    function removeItem(button) {
+        const itemDiv = button.parentElement;
+        itemDiv.remove();
+        updateAllSelects();
+    }
+    
+    function saveData() {
+        const items = [];
+        const rows = document.querySelectorAll('#list-container .item');
+        
+        rows.forEach(row => {
+            const product = row.querySelector('.item-select').value;
+            const quantity = parseInt(row.querySelector('.item-qty').value, 10);
+            if (product) items.push({ product, quantity });
+        });
+
+        if (items.length === 0) {
+            alert('Добавьте хотя бы один товар перед сохранением.');
+            return;
+        }
+
+        console.log('Отправляемые данные:', items);
+
+        fetch('https://example.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderItems: items })
+        })
+        .then(response => response.ok ? alert('Данные успешно сохранены!') : alert('Ошибка при сохранении.'))
+        .catch(error => alert('Не удалось связаться с сервером.'));
+    }
+
+    function init() {
+        if (initialItems.length > 0) {
+            initialItems.forEach(item => {
+                addItem(item.product, item.quantity);
+            });
+        } else {
+            addItem();
+        }
+    }
+
+    init();
+</script>
+
+</body>
+</html>
