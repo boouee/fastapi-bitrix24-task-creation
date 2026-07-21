@@ -7,7 +7,7 @@ import multipart
 import re
 import traceback
 from urllib.parse import unquote, urlparse
-#from api.functions import main, get_preparations, get_deal_preparations
+from api.functions import main, get_preparations, get_deal_preparations
 from api.html import html
 from fastapi.templating import Jinja2Templates
 
