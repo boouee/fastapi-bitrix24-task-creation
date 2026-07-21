@@ -64,8 +64,8 @@ async def get_preparations(start):
   response = bitrix_token.call_method(api_method="catalog.product.list", params=fields)
   products = response["result"]["products"]
   if response["total"] == 50:
-	next_page_products = await get_preparations(start + 1)
-	products = products + next_page_products
+	  next_page_products = await get_preparations(start + 1)
+	  products = products + next_page_products
   products = list(map(lambda product: product["name"], products))
   print(products)
   return products
