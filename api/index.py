@@ -44,6 +44,7 @@ async def task_complete_handler(request: Request):
 @app.get("/api/edit_preparations")
 async def edit_preparations(request: Request):
   try:  
+    await get_preparations()
     preparation_list = '["q", "h", "c"]'
     
     context = {
