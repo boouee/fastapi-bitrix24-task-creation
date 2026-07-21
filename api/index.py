@@ -9,8 +9,10 @@ import traceback
 from urllib.parse import unquote, urlparse
 from api.functions import main
 from api.html import html
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
 @app.post('/api/deal_in_stage')
 async def deal_in_stage_handler(request: Request):
@@ -41,4 +43,6 @@ async def task_complete_handler(request: Request):
 
 @app.get("/api/edit_preparations")
 async def edit_preparations(request: Request):
-    return html
+    return templates.TemplateResponse(
+        request=request, name="index.html", context={"title": "Profile", "username": name}
+    )
