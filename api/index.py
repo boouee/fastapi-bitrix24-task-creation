@@ -43,6 +43,11 @@ async def task_complete_handler(request: Request):
 
 @app.get("/api/edit_preparations")
 async def edit_preparations(request: Request):
+  try:  
     return templates.TemplateResponse(
         request=request, name="index.html", context={"title": "Profile", "username": name}
     )
+  except Exception as e:
+        print(e)
+        traceback.print_exc()
+        return e 
