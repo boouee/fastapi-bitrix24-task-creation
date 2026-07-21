@@ -27,7 +27,7 @@ client = Client(bitrix_token)
 
 async def main(deal_id):
   deal_fields = await get_deal_fields(client, deal_id)
-  if deal_fields["1UF_CRM_1782802335"]:
+  if deal_fields["UF_CRM_1782802335"]:
     print("A task has already been created.")
     return
   preparation_list = await get_preparations(start)
@@ -55,9 +55,10 @@ async def main(deal_id):
 	  "UF_CRM_TASK": [f"D_{deal_id}"],
 	  
   }
-  await create_task(client, fields)
-  
-async def get_deal_fields(client, deal_id):
+  await create_task(fields)
+  await update_deal(deal_id)
+	
+async def get_deal_fields(deal_id):
   bitrix_response = client.crm.deal.get(bitrix_id=deal_id).response
   result = bitrix_response.result
   print(result)
@@ -68,7 +69,7 @@ async def get_contact_data(contact_id):
   response = bitrix_token.call_method(api_method="crm.contact.get", params=fields)
   return response["result"]
 	
-async def create_task(client, fields):
+async def create_task(fields):
   
   bitrix_response = client.tasks.task.add(fields=fields).response
   result = bitrix_response.result
@@ -78,7 +79,13 @@ async def send_notification(client, deal):
   ...
 
 async def update_deal(deal_id):
-  fields = {"taskId": task_id}
+  fields = {
+	  "entityTypeId": 2,
+	  "id": deal_id,
+	  "fields": {
+		  "UF_CRM_1782802335": True
+	  }
+  }
   response = bitrix_token.call_method(api_method="crm.item.update", params=fields)
 
 async def set_preparations(preparations, deal_id, task_id):
