@@ -147,6 +147,9 @@ async def get_deal_preparations(preparation_list, deal_id):
   products = response["result"]["productRows"]
   preparation_list = [item.get("name") for item in preparation_list]
   products = list(filter(lambda product: product["productName"] in preparation_list, products))
+  for product in products:
+	  product["name"] = product["productName"]
+	  
   print(products)
   return products
 
@@ -161,6 +164,8 @@ async def get_deal_services(preparation_list, deal_id):
   products = response["result"]["productRows"]
   preparation_list = [item.get("name") for item in preparation_list]
   products = list(filter(lambda product: product["productName"] not in preparation_list, products))
+  for product in products:
+	  product["name"] = product["productName"]
   print(products)
   return products
 
