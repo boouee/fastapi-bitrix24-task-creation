@@ -89,13 +89,16 @@
 
 <script>
     // 1. Все доступные варианты для выпадающего списка
-    const availableItems = ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
+    const availableItems = {{ preparation_list | tojson }}; //["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
 
     // 2. Изначальный список элементов, который отобразится при загрузке страницы
-    const initialItems = [
+    const initialItems = {{ initial_list | tojson }};
+    /**
+    [
         { product: "Молоко", quantity: 2 },
         { product: "Хлеб", quantity: 1 }
     ];
+    */
 
     // Функция генерации HTML-опций с возможностью установить выбранный элемент
     function generateOptions(selectedValue = '') {
