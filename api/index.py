@@ -7,7 +7,7 @@ import multipart
 import re
 import traceback
 from urllib.parse import unquote, urlparse
-from api.functions import main, get_preparations, get_deal_preparations
+#from api.functions import main, get_preparations, get_deal_preparations
 from api.html import html
 from fastapi.templating import Jinja2Templates
 
@@ -53,9 +53,14 @@ async def edit_preparations(request: Request):
         'initial_list': deal_preparations
     }
     return templates.TemplateResponse(
-        request=request, name="index.html", context=context
+        request=request, name="_index.html", context=context
     )
   except Exception as e:
         print(e)
         traceback.print_exc()
         return e 
+
+@app.post("/api/update_preparations")
+async def update_preparations(request: Request):
+  data = await request.json()
+  ...     
