@@ -60,8 +60,8 @@ async def get_preparations():
 		"iblockSectionId": 2
 	}
   }
-  bitrix_response = client.catalog.product.list(params=fields).response
-  result = bitrix_response.result
+  bitrix_response = client.call(method="catalog.product.list", params=fields)
+  result = bitrix_response["result"]
   print(result)
 
 async def get_deal_preparations(deal_id):
