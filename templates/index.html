@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактируемый список с выбором</title>
+    <title>Редактируемый список с отправкой</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,6 +61,19 @@
             width: 100%;
         }
         .btn-add:hover { background-color: #40a9ff; }
+        .btn-save {
+            background-color: #52c41a;
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-save:hover { background-color: #73d13d; }
     </style>
 </head>
 <body>
@@ -71,27 +84,23 @@
         <!-- Сюда динамически добавляются элементы -->
     </div>
     <button class="btn-add" onclick="addItem()">+ Добавить элемент</button>
+    <button class="btn-save" onclick="saveData()">Сохранить данные</button>
 </div>
 
 <script>
-    // Массив с элементами для выпадающего списка
     const availableItems = ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
 
-    // Функция генерации HTML-опций из массива
     function generateOptions() {
         return availableItems
             .map(item => `<option value="${item}">${item}</option>`)
             .join('');
     }
 
-    // Функция добавления нового элемента в список
     function addItem() {
         const container = document.getElementById('list-container');
-        
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
         
-        // Вставляем сгенерированные опции внутрь тега select
         itemDiv.innerHTML = `
             <select class="item-select">
                 ${generateOptions()}
@@ -103,15 +112,60 @@
         container.appendChild(itemDiv);
     }
 
-    // Функция удаления элемента
     function removeItem(button) {
         const itemDiv = button.parentElement;
         itemDiv.remove();
     }
     
-    // Инициализация: добавляем одну строку при старте
+    // Новая функция сбора данных и отправки POST-запроса
+    function saveData() {
+        const items = [];
+        const rows = document.querySelectorAll('#list-container .item');
+        
+        // Собираем данные со всех добавленных строк
+        rows.forEach(row => {
+            const product = row.querySelector('.item-select').value;
+            const quantity = parseInt(row.querySelector('.item-qty').value, 10);
+            
+            items.push({
+                product: product,
+                quantity: quantity
+            });
+        });
+
+        // Проверяем, не пустой ли список
+        if (items.length === 0) {
+            alert('Добавьте хотя бы один товар перед сохранением.');
+            return;
+        }
+
+        console.log('Отправляемые данные:', items);
+
+        // Отправка POST-запроса с помощью Fetch API
+        fetch('https://example.com', { // Замените URL на ваш рабочий эндпоинт
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderItems: items })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Данные успешно сохранены!');
+            } else {
+                alert('Ошибка при сохранении данных.');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка сети:', error);
+            alert('Не удалось связаться с сервером.');
+        });
+    }
+
+    // Инициализация при старте
     addItem();
 </script>
 
 </body>
 </html>
+
