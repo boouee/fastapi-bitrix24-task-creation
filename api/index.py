@@ -51,7 +51,7 @@ async def edit_preparations(request: Request):
         'initial_list': '["q", "c"]'
     }
     return templates.TemplateResponse(
-        request=request, name="index.html", context={"title": "Profile", "username": "name"}
+        request=request, name="index.html", context=context
     )
   except Exception as e:
         print(e)
