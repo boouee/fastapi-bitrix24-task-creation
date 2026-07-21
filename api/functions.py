@@ -47,8 +47,22 @@ async def send_notification(client, deal):
 async def update_deal(client, deal_id):
   ...
 
-async def get_preparations():
-  ...
+async def get_preparations(): 
+  fields = {
+	"select": [
+		"id",
+		"iblockId",
+		"name"
+	],
+	"filter": {
+		"active": "Y",
+		"iblockId": 14,
+		"iblockSectionId": 2
+	}
+  }
+  bitrix_response = client.catalog.product.list(fields=fields).response
+  result = bitrix_response.result
+  print(result)
 
 async def get_deal_preparations(deal_id):
   ...
