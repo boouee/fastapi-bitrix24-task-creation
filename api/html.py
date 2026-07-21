@@ -1,3 +1,3 @@
 def html():
   return """
-    hello"""
+    <h1>hello</h1>"""
