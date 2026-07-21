@@ -47,6 +47,7 @@ async def main(deal_id):
 	  "DESCRIPTION": task_description,
 	  "DEADLINE": deal_fields["UF_CRM_1782801843799"],
 	  "UF_CRM_TASK": [f"D_{deal_id}"],
+  }
   await create_task(client, fields)
   
 async def get_deal_fields(client, deal_id):
