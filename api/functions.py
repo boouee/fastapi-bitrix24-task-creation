@@ -44,8 +44,9 @@ async def create_task(client, fields):
 async def send_notification(client, deal):
   ...
 
-async def update_deal(client, deal_id):
-  ...
+async def update_deal(deal_id):
+  fields = {"taskId": task_id"}
+  response = bitrix_token.call_method(api_method="crm.item.update", params=fields)
 
 async def get_preparations(start): 
   fields = {
@@ -83,11 +84,18 @@ async def get_deal_preparations(preparation_list, deal_id):
   print(products)
   return products
 	
-async def check_task(client, task_id):
-  ...
+async def check_task(task_id):
+  fields = {"taskId": task_id}
+  response = bitrix_token.call_method(api_method="tasks.task.result.list", params=fields)
+  if response["result"]["text"] and response["result"]["files"]:
+	return True
+  else:
+	return False 
 
-async def return_task_to_work(client, task_id):
-  ...
+async def return_task_to_work(task_id):
+  fields = {"taskId": task_id}
+  response = bitrix_token.call_method(api_method="tasks.task.result.list", params=fields)
 
 async def update_task(task_id):
-  ...
+  fields = {"taskId": task_id"}
+  response = bitrix_token.call_method(api_method="tasks.task.result.list", params=fields)
