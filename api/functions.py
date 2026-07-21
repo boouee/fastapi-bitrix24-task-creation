@@ -74,6 +74,28 @@ async def update_deal(deal_id):
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="crm.item.update", params=fields)
 
+async def set_preparations(preparations, deal_id, task_id):
+  deal_services = await get_deal_services(deal_id)
+  rows = []
+  preparations = preparations + deal_services
+  for service in deal_services:
+	rows.append({
+	  "PRODUCT_ID": service["id"],
+	  "QUANTITY": service["quantity"],
+	  "PRICE": service["price"]
+	})
+  for preparation in preparations:
+	rows.append({
+	  "PRODUCT_ID": preparation["id"],
+	  "QUANTITY": preparation["quantity"],
+	  "PRICE": preparation["price"]
+	})
+  fields = {
+	"id": deal_id,
+	"rows": rows	  
+  }
+  response = bitrix_token.call_method(api_method="crm.deal.productrows.set", params=fields)
+ 
 async def get_preparations(start): 
   fields = {
 	"start": start,
