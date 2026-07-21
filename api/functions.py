@@ -29,13 +29,13 @@ async def main(deal_id):
   deal_fields = await get_deal_fields(client, deal_id)
   preparation_list = await get_preparations(start)
   deal_services = await get_deal_services(preparation_list, deal_id)
-  contact_data = await get_contact_data(deal_fields[""])
+  contact_data = await get_contact_data(deal_fields["CONTACT_ID"])
   task_description = f"""
   Адрес:
   {deal_fields["UF_CRM_1782801963621"]}
 
-  Имя: {contact_data[""]}
-  Телефон: {contact_data[""]}
+  Имя: {contact_data["NAME"] + " " + contact_data["SECOND_NAME"] + " " + contact_data["LAST_NAME"] }
+  Телефон: {contact_data["PHONE"][0]["VALUE"]}
 
   Препараты (изменить: ):
   {deal_services}
@@ -54,8 +54,13 @@ async def get_deal_fields(client, deal_id):
   bitrix_response = client.crm.deal.get(bitrix_id=deal_id).response
   result = bitrix_response.result
   print(result)
-  return {"TITLE": "TITLE", "RESPONSIBLE_ID":1}
-  
+  return result
+
+async def get_contact_data(contact_id):
+  fields = { "ID": contact_id }
+  response = bitrix_token.call_method(api_method="crm.contact.get", params=fields)
+  return response["result"]
+	
 async def create_task(client, fields):
   
   bitrix_response = client.tasks.task.add(fields=fields).response
@@ -130,10 +135,11 @@ async def return_task_to_work(task_id):
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.disapprove", params=fields)
 
-async def update_task(task_id):
-  fields = {"taskId": task_id}
+async def update_task(task_id, description):
+  fields = {"taskId": task_id, "fields": { "description": description } }
   response = bitrix_token.call_method(api_method="tasks.task.update", params=fields)
 
 async def get_task(task_id):
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.get", params=fields)
+  return response["result"]
