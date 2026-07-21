@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактируемый список</title>
+    <title>Редактируемый список с выбором</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,11 +27,12 @@
             background: #f1f1f1;
             border-radius: 4px;
         }
-        .item-name {
+        .item-select {
             flex-grow: 1;
             padding: 6px;
             border: 1px solid #ccc;
             border-radius: 4px;
+            background-color: #fff;
         }
         .item-qty {
             width: 60px;
@@ -65,23 +66,36 @@
 <body>
 
 <div class="container">
-    <h2>Список покупок</h2>
+    <h2>Выбор товаров</h2>
     <div id="list-container">
-        <!-- Элементы списка будут добавляться сюда -->
+        <!-- Сюда динамически добавляются элементы -->
     </div>
     <button class="btn-add" onclick="addItem()">+ Добавить элемент</button>
 </div>
 
 <script>
-    // Функция добавления нового элемента
+    // Массив с элементами для выпадающего списка
+    const availableItems = ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
+
+    // Функция генерации HTML-опций из массива
+    function generateOptions() {
+        return availableItems
+            .map(item => `<option value="${item}">${item}</option>`)
+            .join('');
+    }
+
+    // Функция добавления нового элемента в список
     function addItem() {
         const container = document.getElementById('list-container');
         
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
         
+        // Вставляем сгенерированные опции внутрь тега select
         itemDiv.innerHTML = `
-            <input type="text" class="item-name" placeholder="Название товара" value="">
+            <select class="item-select">
+                ${generateOptions()}
+            </select>
             <input type="number" class="item-qty" value="1" min="1" placeholder="Кол-во">
             <button class="btn-remove" onclick="removeItem(this)">Удалить</button>
         `;
@@ -95,10 +109,9 @@
         itemDiv.remove();
     }
     
-    // Добавим один элемент по умолчанию при загрузке
+    // Инициализация: добавляем одну строку при старте
     addItem();
 </script>
 
 </body>
 </html>
-
