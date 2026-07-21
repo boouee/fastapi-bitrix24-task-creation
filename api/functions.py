@@ -70,9 +70,19 @@ async def get_preparations(start):
   print(products)
   return products
 	
-async def get_deal_preparations(deal_id):
-  ...
-    
+async def get_deal_preparations(preparation_list, deal_id):
+  fields = {
+	"filter": {
+	  "=ownerType": "D",
+	  "=ownerId": deal_id
+	}
+  }
+  response = bitrix_token.call_method(api_method="crm.item.productrow.list", params=fields)
+  products = response["result"]["productRows"]
+  products = list(filter(lambda product: product["productName"] in preparation_list, products))
+  print(products)
+  return products
+	
 async def check_task(client, task_id):
   ...
 
