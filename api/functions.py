@@ -30,8 +30,8 @@ async def main(deal_id):
   if deal_fields["UF_CRM_1782802335"]:
     print("A task has already been created.")
     return
-  preparation_list = await get_preparations(start)
-  deal_prepations = await get_deal_preparations()
+  preparation_list = await get_preparations(1)
+  deal_prepations = await get_deal_preparations(preparation_list, deal_id)
   deal_services = await get_deal_services(preparation_list, deal_id)
   contact_data = await get_contact_data(deal_fields["CONTACT_ID"])
   task_preparations = list(map(lambda preparation: preparation["name"], deal_prepations))
