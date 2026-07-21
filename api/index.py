@@ -44,6 +44,12 @@ async def task_complete_handler(request: Request):
 @app.get("/api/edit_preparations")
 async def edit_preparations(request: Request):
   try:  
+    preparation_list = '["q", "h", "c"]'
+    
+    context = {
+        'preparation_list': '["q", "h", "c"]',
+        'initial_list': '["q", "c"]'
+    }
     return templates.TemplateResponse(
         request=request, name="index.html", context={"title": "Profile", "username": "name"}
     )
