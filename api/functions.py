@@ -119,7 +119,7 @@ async def get_preparations(start):
   if response["total"] == 50:
 	  next_page_products = await get_preparations(start + 1)
 	  products = products + next_page_products
-  products = list(map(lambda product: product["name"], products))
+  #products = list(map(lambda product: product["name"], products))
   print(products)
   return products
 	
