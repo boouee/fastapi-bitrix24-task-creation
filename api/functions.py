@@ -49,6 +49,7 @@ async def update_deal(client, deal_id):
 
 async def get_preparations(start): 
   fields = {
+	"start": start,
 	"select": [
 		"id",
 		"iblockId",
@@ -64,8 +65,11 @@ async def get_preparations(start):
   products = response["result"]["products"]
   if response["total"] == 50:
 	 next_page_products = await get_preparations(start + 1)
-  print(result)
-
+	 products = products + next_page_products
+  products = list(map(lambda product: product["name"], products))
+  print(products)
+  return products
+	
 async def get_deal_preparations(deal_id):
   ...
     
