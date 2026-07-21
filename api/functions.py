@@ -60,7 +60,7 @@ async def get_preparations():
 		"iblockSectionId": 2
 	}
   }
-  bitrix_response = client.catalog.product.list(fields=fields).response
+  bitrix_response = client.catalog.product.list(params=fields).response
   result = bitrix_response.result
   print(result)
 
