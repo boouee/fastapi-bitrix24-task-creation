@@ -47,8 +47,8 @@ async def edit_preparations(request: Request):
     preparation_list = '["q", "h", "c"]'
     
     context = {
-        'preparation_list': '["q", "h", "c"]',
-        'initial_list': '[{"product": "q", "quantity": 1}, {"product": "c", "quantity": 0}]'
+        'preparation_list': ["q", "h", "c"],
+        'initial_list': [{"product": "q", "quantity": 1}, {"product": "c", "quantity": 0}]
     }
     return templates.TemplateResponse(
         request=request, name="index.html", context=context
