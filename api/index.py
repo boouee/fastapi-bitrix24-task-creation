@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from fastapi.templating import Jinja2Templates
 from typing import Annotated
 import multipart
 import re
