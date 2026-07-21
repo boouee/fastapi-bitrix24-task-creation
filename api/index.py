@@ -45,7 +45,7 @@ async def task_complete_handler(request: Request):
 async def edit_preparations(request: Request):
   try:  
     return templates.TemplateResponse(
-        request=request, name="index.html", context={"title": "Profile", "username": name}
+        request=request, name="index.html", context={"title": "Profile", "username": "name"}
     )
   except Exception as e:
         print(e)
