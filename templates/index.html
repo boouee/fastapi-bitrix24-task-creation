@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактируемый список</title>
+    <title>Уникальный выбор элементов</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -79,59 +79,106 @@
 <body>
 
 <div class="container">
-    <h2>Выбор товаров</h2>
+    <h2>Выбор уникальных товаров</h2>
     <div id="list-container">
         <!-- Сюда динамически добавляются элементы -->
     </div>
-    <button class="btn-add" onclick="addItem()">+ Добавить элемент</button>
+    <button id="add-button" class="btn-add" onclick="addItem()">+ Добавить элемент</button>
     <button class="btn-save" onclick="saveData()">Сохранить данные</button>
 </div>
 
 <script>
-    // 1. Все доступные варианты для выпадающего списка
-    const availableItems = {{ preparation_list | tojson }}; //["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
+    // Справочник всех доступных товаров
+    const availableItems = ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
 
-    // 2. Изначальный список элементов, который отобразится при загрузке страницы
-    const initialItems = {{ initial_list | tojson }};
-    /**
-    [
+    // Изначально выбранные элементы
+    const initialItems = [
         { product: "Молоко", quantity: 2 },
         { product: "Хлеб", quantity: 1 }
     ];
-    */
 
-    // Функция генерации HTML-опций с возможностью установить выбранный элемент
-    function generateOptions(selectedValue = '') {
-        return availableItems
-            .map(item => {
-                const selected = item === selectedValue ? 'selected' : '';
-                return `<option value="${item}" ${selected}>${item}</option>`;
-            })
-            .join('');
+    // Функция сбора всех текущих выбранных значений со страницы
+    function getCurrentlySelected() {
+        const selects = document.querySelectorAll('.item-select');
+        return Array.from(selects).map(select => select.value).filter(val => val !== '');
     }
 
-    // Функция добавления строки. Принимает дефолтные значения (необязательно)
+    // Функция обновления всех выпадающих списков на основе текущего выбора
+    function updateAllSelects() {
+        const selectedValues = getCurrentlySelected();
+        const rows = document.querySelectorAll('#list-container .item');
+
+        rows.forEach(row => {
+            const select = row.querySelector('.item-select');
+            const currentValue = select.value;
+
+            // Формируем опции: оставляем только не занятые элементы + тот, что выбран в данной строке
+            let optionsHTML = '';
+            availableItems.forEach(item => {
+                if (item === currentValue || !selectedValues.includes(item)) {
+                    const selected = item === currentValue ? 'selected' : '';
+                    optionsHTML += `<option value="${item}" ${selected}>${item}</option>`;
+                }
+            });
+
+            select.innerHTML = optionsHTML;
+        });
+
+        // Блокируем кнопку добавления, если все доступные товары уже выбраны
+        const addButton = document.getElementById('add-button');
+        if (selectedValues.length >= availableItems.length) {
+            addButton.disabled = true;
+            addButton.style.opacity = '0.5';
+            addButton.innerText = 'Все элементы выбраны';
+        } else {
+            addButton.disabled = false;
+            addButton.style.opacity = '1';
+            addButton.innerText = '+ Добавить элемент';
+        }
+    }
+
+    // Добавление строки
     function addItem(productValue = '', quantityValue = 1) {
         const container = document.getElementById('list-container');
+        
+        // Перестраховка: не добавляем строку, если лимит товаров исчерпан
+        const selectedValues = getCurrentlySelected();
+        if (selectedValues.length >= availableItems.length && !productValue) {
+            return;
+        }
+
+        // Если продукт не передан, берем первый попавшийся свободный элемент
+        if (!productValue) {
+            productValue = availableItems.find(item => !selectedValues.includes(item)) || '';
+        }
+
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
         
+        // Создаем базовую разметку (опции перестроятся функцией updateAllSelects)
         itemDiv.innerHTML = `
-            <select class="item-select">
-                ${generateOptions(productValue)}
+            <select class="item-select" onchange="updateAllSelects()">
+                <option value="${productValue}" selected>${productValue}</option>
             </select>
             <input type="number" class="item-qty" value="${quantityValue}" min="1" placeholder="Кол-во">
             <button class="btn-remove" onclick="removeItem(this)">Удалить</button>
         `;
         
         container.appendChild(itemDiv);
+        
+        // Пересчитываем доступные списки для всех элементов
+        updateAllSelects();
     }
 
+    // Удаление строки
     function removeItem(button) {
         const itemDiv = button.parentElement;
         itemDiv.remove();
+        // Пересчитываем списки после удаления строки
+        updateAllSelects();
     }
     
+    // Сбор и отправка POST-запроса
     function saveData() {
         const items = [];
         const rows = document.querySelectorAll('#list-container .item');
@@ -139,8 +186,7 @@
         rows.forEach(row => {
             const product = row.querySelector('.item-select').value;
             const quantity = parseInt(row.querySelector('.item-qty').value, 10);
-            
-            items.push({ product, quantity });
+            if (product) items.push({ product, quantity });
         });
 
         if (items.length === 0) {
@@ -159,19 +205,17 @@
         .catch(error => alert('Не удалось связаться с сервером.'));
     }
 
-    // Инициализация: загружаем элементы из изначального массива
+    // Инициализация при загрузке страницы
     function init() {
         if (initialItems.length > 0) {
             initialItems.forEach(item => {
                 addItem(item.product, item.quantity);
             });
         } else {
-            // Если массив пустой, добавляем одну пустую строку
             addItem();
         }
     }
 
-    // Запускаем инициализацию при загрузке страницы
     init();
 </script>
 
