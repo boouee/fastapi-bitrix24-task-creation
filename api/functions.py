@@ -60,7 +60,7 @@ async def get_preparations():
 		"iblockSectionId": 2
 	}
   }
-  bitrix_response = client.call(method="catalog.product.list", params=fields)
+  bitrix_response = bitrix_token.call(method="catalog.product.list", params=fields)
   result = bitrix_response["result"]
   print(result)
 
