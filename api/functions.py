@@ -26,8 +26,28 @@ bitrix_token = BitrixWebhook(
 client = Client(bitrix_token)
 
 async def main(deal_id):
-  fields = await get_deal_fields(client, deal_id)
-  await create_task(client, fields)
+  deal_fields = await get_deal_fields(client, deal_id)
+  preparation_list = await get_preparations(start):
+  deal_services = await get_deal_services(preparation_list, deal_id)
+  contact_data = await get_contact_data(deal_fields[""])
+  task_description = f"""
+  Адрес:
+  {deal_fields["UF_CRM_1782801963621"]}
+
+  Имя: {contact_data[""]}
+  Телефон: {contact_data[""]}
+
+  Препараты (изменить: ):
+  {deal_services}
+  """
+  
+  fields = {
+	  "TITLE": ", ".join(deal_services),
+	  "RESPONSIBLE_ID": deal_fields["UF_CRM_1782853296"],
+	  "DESCRIPTION": task_description,
+	  "DEADLINE": deal_fields["UF_CRM_1782801843799"],
+	  "UF_CRM_TASK": [f"D_{deal_id}"],
+	await create_task(client, fields)
   
 async def get_deal_fields(client, deal_id):
   bitrix_response = client.crm.deal.get(bitrix_id=deal_id).response
@@ -83,7 +103,20 @@ async def get_deal_preparations(preparation_list, deal_id):
   products = list(filter(lambda product: product["productName"] in preparation_list, products))
   print(products)
   return products
-	
+
+async def get_deal_services(preparation_list, deal_id):
+  fields = {
+	"filter": {
+	  "=ownerType": "D",
+	  "=ownerId": deal_id
+	}
+  }
+  response = bitrix_token.call_method(api_method="crm.item.productrow.list", params=fields)
+  products = response["result"]["productRows"]
+  products = list(filter(lambda product: product["productName"] not in preparation_list, products))
+  print(products)
+  return products
+
 async def check_task(task_id):
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.result.list", params=fields)
