@@ -33,6 +33,7 @@ async def main(deal_id):
   preparation_list = await get_preparations(1)
   deal_prepations = await get_deal_preparations(preparation_list, deal_id)
   deal_services = await get_deal_services(preparation_list, deal_id)
+  deal_services = list(map(lambda preparation: preparation["name"], deal_services))
   contact_data = await get_contact_data(deal_fields["CONTACT_ID"])
   task_preparations = list(map(lambda preparation: preparation["name"], deal_prepations))
   task_preparations = "/n".join(task_preparations)
