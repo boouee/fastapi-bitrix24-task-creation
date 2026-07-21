@@ -27,7 +27,7 @@ client = Client(bitrix_token)
 
 async def main(deal_id):
   deal_fields = await get_deal_fields(client, deal_id)
-  preparation_list = await get_preparations(start):
+  preparation_list = await get_preparations(start)
   deal_services = await get_deal_services(preparation_list, deal_id)
   contact_data = await get_contact_data(deal_fields[""])
   task_description = f"""
