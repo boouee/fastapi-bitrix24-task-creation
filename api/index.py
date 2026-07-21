@@ -34,6 +34,8 @@ async def task_complete_handler(request: Request):
         print(unquote(body))
         form_data = await request.form()
         form_data = dict(form_data)
+        print(form_data)
+        print(form_data["data[FIELDS_AFTER][ID]"])
         #result = await collab_created_handler(form_data["data[FIELDS][ID]"])
         #return result
     except Exception as e:
