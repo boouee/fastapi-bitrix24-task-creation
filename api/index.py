@@ -43,13 +43,14 @@ async def task_complete_handler(request: Request):
 
 @app.get("/api/edit_preparations")
 async def edit_preparations(request: Request):
-  try:  
-    await get_preparations()
-    preparation_list = '["q", "h", "c"]'
+  try:      
+    deal_id = dict(request.query_params)["deal_id"]
+    preparation_list = await get_preparations(1)
+    deal_preparations = await get_deal_preparations(preparation_list, deal_id)
     
     context = {
-        'preparation_list': ["q", "h", "c"],
-        'initial_list': [{"product": "q", "quantity": 1}, {"product": "c", "quantity": 0}]
+        'preparation_list': preparation_list,
+        'initial_list': deal_preparations
     }
     return templates.TemplateResponse(
         request=request, name="index.html", context=context
