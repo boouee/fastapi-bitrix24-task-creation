@@ -89,14 +89,16 @@
 
 <script>
     // Справочник всех доступных товаров
-    const availableItems = ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
+    const availableItems = {{ preparation_list | tojson }};//["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
 
     // Изначально выбранные элементы
-    const initialItems = [
+    const initialItems = {{ initial_list | tojson }};
+    /**
+    [
         { product: "Молоко", quantity: 2 },
         { product: "Хлеб", quantity: 1 }
     ];
-
+    */
     // Функция сбора всех текущих выбранных значений со страницы
     function getCurrentlySelected() {
         const selects = document.querySelectorAll('.item-select');
@@ -196,7 +198,7 @@
 
         console.log('Отправляемые данные:', items);
 
-        fetch('https://example.com', {
+        fetch('/api/update_preparations', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ orderItems: items })
