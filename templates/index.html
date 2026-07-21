@@ -142,7 +142,7 @@
         console.log('Отправляемые данные:', items);
 
         // Отправка POST-запроса с помощью Fetch API
-        fetch('https://fastapi-bitrix24-task-creation.vercel.app/api/deal_in_stage', { // Замените URL на ваш рабочий эндпоинт
+        fetch('/api/deal_in_stage', { // Замените URL на ваш рабочий эндпоинт
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
