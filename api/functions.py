@@ -47,7 +47,7 @@ async def send_notification(client, deal):
 async def update_deal(client, deal_id):
   ...
 
-async def get_preparations(): 
+async def get_preparations(start): 
   fields = {
 	"select": [
 		"id",
@@ -60,8 +60,10 @@ async def get_preparations():
 		"iblockSectionId": 2
 	}
   }
-  bitrix_response = bitrix_token.call_method(api_method="catalog.product.list", params=fields)
-  result = bitrix_response["result"]
+  response = bitrix_token.call_method(api_method="catalog.product.list", params=fields)
+  products = response["result"]["products"]
+  if response["total"] == 50:
+	 next_page_products = await get_preparations(start + 1)
   print(result)
 
 async def get_deal_preparations(deal_id):
