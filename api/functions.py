@@ -40,7 +40,7 @@ async def main(deal_id):
   Адрес:
   {deal_fields["UF_CRM_1782801963621"]}
 
-  Имя: {contact_data["NAME"] + " " + contact_data["SECOND_NAME"] + " " + contact_data["LAST_NAME"] }
+  Имя: {(contact_data["NAME"] or "") + " " + (contact_data["SECOND_NAME"] or "") + " " + (contact_data["LAST_NAME"] or "") }
   Телефон: {contact_data["PHONE"][0]["VALUE"]}
 
   Препараты (изменить: ):
