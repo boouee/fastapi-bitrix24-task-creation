@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактируемый список с отправкой</title>
+    <title>Редактируемый список</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -88,24 +88,36 @@
 </div>
 
 <script>
-    const availableItems = {{ preparate_list | tojson }};// ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
+    // 1. Все доступные варианты для выпадающего списка
+    const availableItems = ["Яблоки", "Бананы", "Молоко", "Хлеб", "Кофе", "Чай"];
 
-    function generateOptions() {
+    // 2. Изначальный список элементов, который отобразится при загрузке страницы
+    const initialItems = [
+        { product: "Молоко", quantity: 2 },
+        { product: "Хлеб", quantity: 1 }
+    ];
+
+    // Функция генерации HTML-опций с возможностью установить выбранный элемент
+    function generateOptions(selectedValue = '') {
         return availableItems
-            .map(item => `<option value="${item}">${item}</option>`)
+            .map(item => {
+                const selected = item === selectedValue ? 'selected' : '';
+                return `<option value="${item}" ${selected}>${item}</option>`;
+            })
             .join('');
     }
 
-    function addItem() {
+    // Функция добавления строки. Принимает дефолтные значения (необязательно)
+    function addItem(productValue = '', quantityValue = 1) {
         const container = document.getElementById('list-container');
         const itemDiv = document.createElement('div');
         itemDiv.className = 'item';
         
         itemDiv.innerHTML = `
             <select class="item-select">
-                ${generateOptions()}
+                ${generateOptions(productValue)}
             </select>
-            <input type="number" class="item-qty" value="1" min="1" placeholder="Кол-во">
+            <input type="number" class="item-qty" value="${quantityValue}" min="1" placeholder="Кол-во">
             <button class="btn-remove" onclick="removeItem(this)">Удалить</button>
         `;
         
@@ -117,23 +129,17 @@
         itemDiv.remove();
     }
     
-    // Новая функция сбора данных и отправки POST-запроса
     function saveData() {
         const items = [];
         const rows = document.querySelectorAll('#list-container .item');
         
-        // Собираем данные со всех добавленных строк
         rows.forEach(row => {
             const product = row.querySelector('.item-select').value;
             const quantity = parseInt(row.querySelector('.item-qty').value, 10);
             
-            items.push({
-                product: product,
-                quantity: quantity
-            });
+            items.push({ product, quantity });
         });
 
-        // Проверяем, не пустой ли список
         if (items.length === 0) {
             alert('Добавьте хотя бы один товар перед сохранением.');
             return;
@@ -141,31 +147,30 @@
 
         console.log('Отправляемые данные:', items);
 
-        // Отправка POST-запроса с помощью Fetch API
-        fetch('/api/deal_in_stage', { // Замените URL на ваш рабочий эндпоинт
+        fetch('https://example.com', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ orderItems: items })
         })
-        .then(response => {
-            if (response.ok) {
-                alert('Данные успешно сохранены!');
-            } else {
-                alert('Ошибка при сохранении данных.');
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка сети:', error);
-            alert('Не удалось связаться с сервером.');
-        });
+        .then(response => response.ok ? alert('Данные успешно сохранены!') : alert('Ошибка при сохранении.'))
+        .catch(error => alert('Не удалось связаться с сервером.'));
     }
 
-    // Инициализация при старте
-    addItem();
+    // Инициализация: загружаем элементы из изначального массива
+    function init() {
+        if (initialItems.length > 0) {
+            initialItems.forEach(item => {
+                addItem(item.product, item.quantity);
+            });
+        } else {
+            // Если массив пустой, добавляем одну пустую строку
+            addItem();
+        }
+    }
+
+    // Запускаем инициализацию при загрузке страницы
+    init();
 </script>
 
 </body>
 </html>
-
