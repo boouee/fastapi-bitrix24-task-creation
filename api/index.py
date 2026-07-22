@@ -7,7 +7,7 @@ import multipart
 import re
 import traceback
 from urllib.parse import unquote, urlparse
-from api.functions import main, get_preparations, get_deal_preparations
+from api.functions import main, get_preparations, get_deal_preparations, set_preparations
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
@@ -65,3 +65,8 @@ async def edit_preparations(request: Request):
 async def update_preparations(request: Request):
   data = await request.json()
   print(data)   
+  preparation_list = await get_preparations(1)
+  for preparation in data["orderItems"]:
+     preparation["id"] = next((item for item in preparation_list if item.get("name") == 2), None)["id"]
+  print(data)
+                              
