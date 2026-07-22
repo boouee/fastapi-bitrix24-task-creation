@@ -96,7 +96,7 @@ async def set_task_preparations(preparation_list, deal_id, task_id):
   task_data = await get_task(task_id)
   task_description = task_data["description"]
   print(task_description)
-  task_description = re.search(r'.*Препараты:.*?\\n', task_description)
+  task_description = re.search(r'.*Препараты:.*?\\n', task_description).group()
   print(task_description)
 	
 async def set_deal_preparations(preparation_list, preparations, deal_id, task_id):
