@@ -39,7 +39,7 @@ async def main(deal_id):
   task_preparations = "\n".join(task_preparations)
   
   fields = {
-	  "TITLE": ", (".join(deal_services) or "Задача"),
+	  "TITLE": (", ".join(deal_services) or "Задача"),
 	  "RESPONSIBLE_ID": deal_fields["UF_CRM_1782853296"],
 	  "DEADLINE": deal_fields["UF_CRM_1782801843799"],
 	  "UF_CRM_TASK": [f"D_{deal_id}"],
