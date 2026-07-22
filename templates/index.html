@@ -204,7 +204,7 @@
             body: JSON.stringify({ orderItems: items })
         })
         .then(response => response.ok ? alert('Данные успешно сохранены!') : alert('Ошибка при сохранении.'))
-        .catch(error => alert('Не удалось связаться с сервером.'));
+        .catch(error => alert(error.message));//('Не удалось связаться с сервером.'));
     }
 
     // Инициализация при загрузке страницы
