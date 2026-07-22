@@ -27,7 +27,7 @@ client = Client(bitrix_token)
 
 async def main(deal_id):
   deal_fields = await get_deal_fields(deal_id)
-  if deal_fields["UF_CRM_1782802335"] === "1":
+  if deal_fields["UF_CRM_1782802335"] == "1":
     print("A task has already been created.")
     return
   preparation_list = await get_preparations(1)
