@@ -99,7 +99,7 @@ async def set_task_preparations(preparation_list, deal_id, task_id):
   task_description = re.search(r".*Препараты.*?\n", task_description, re.S).group()
   print(task_description)
   task_description = task_description + task_preparations
-  fields = {"id": task_id, "fields": { "DESCRIPTION": description } }
+  fields = {"id": task_id, "fields": { "DESCRIPTION": task_description } }
   response = bitrix_token.call_method(api_method="tasks.task.update", params=fields)
  
 async def set_deal_preparations(preparation_list, preparations, deal_id, task_id):
