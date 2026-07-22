@@ -7,7 +7,7 @@ import multipart
 import re
 import traceback
 from urllib.parse import unquote, urlparse
-from api.functions import main, get_preparations, get_deal_preparations, set_preparations
+from api.functions import main, get_preparations, get_deal_preparations, set_deal_preparations, set_task_preparations
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
@@ -72,7 +72,9 @@ async def update_preparations(request: Request):
       preparation["name"] = preparation["product"]
       #preparation["price"] = next((item for item in preparation_list if item.get("name") == preparation["product"]), None)["price"]
     print(data)
-    await set_preparations(preparation_list, data["orderItems"], int(data["deal_id"]), int(data["task_id"]))
+    await set_deal_preparations(preparation_list, data["orderItems"], int(data["deal_id"]), int(data["task_id"]))
+    await set_task_preparations(preparation_list, int(data["deal_id"]), int(data["task_id"]))
+      
   except Exception as e:
         print(e)
         traceback.print_exc()
