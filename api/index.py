@@ -72,7 +72,7 @@ async def update_preparations(request: Request):
       preparation["name"] = preparation["product"]
       #preparation["price"] = next((item for item in preparation_list if item.get("name") == preparation["product"]), None)["price"]
     print(data)
-    await set_preparations(data["orderItems"], int(data["deal_id"]), int(data["task_id"]))
+    await set_preparations(preparation_list, data["orderItems"], int(data["deal_id"]), int(data["task_id"]))
   except Exception as e:
         print(e)
         traceback.print_exc()
