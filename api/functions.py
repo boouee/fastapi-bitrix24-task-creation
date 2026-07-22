@@ -83,6 +83,7 @@ async def update_deal(deal_id):
   fields = {
 	  "entityTypeId": 2,
 	  "id": deal_id,
+	  "useOriginalUfNames": "Y", 
 	  "fields": {
 		  "UF_CRM_1782802335": True
 	  }
