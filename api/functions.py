@@ -31,11 +31,11 @@ async def main(deal_id):
     print("A task has already been created.")
     return
   preparation_list = await get_preparations(1)
-  deal_prepations = await get_deal_preparations(preparation_list, deal_id)
+  deal_preparations = await get_deal_preparations(preparation_list, deal_id)
   deal_services = await get_deal_services(preparation_list, deal_id)
   deal_services = list(map(lambda preparation: preparation["name"], deal_services))
   contact_data = await get_contact_data(deal_fields["CONTACT_ID"])
-  task_preparations = list(map(lambda preparation: preparation["name"], deal_prepations))
+  task_preparations = list(map(lambda preparation: preparation["name"], deal_preparations))
   task_preparations = "/n".join(task_preparations)
   task_description = f"""
   Адрес:
@@ -89,7 +89,13 @@ async def update_deal(deal_id):
   }
   response = bitrix_token.call_method(api_method="crm.item.update", params=fields)
 
-async def set_preparations(preparation_list, preparations, deal_id, task_id):
+async def set_task_preparations(preparation_list, deal_id, task_id):
+  deal_preparations = await get_deal_preparations(preparation_list, deal_id)
+  task_preparations = list(map(lambda preparation: preparation["name"], deal_preparations))
+  task_preparations = "/n".join(task_preparations)
+  task_data = await get_task(task_id)
+	
+async def set_deal_preparations(preparation_list, preparations, deal_id, task_id):
   deal_services = await get_deal_services(preparation_list, deal_id)
   rows = []
   preparations = preparations + deal_services
