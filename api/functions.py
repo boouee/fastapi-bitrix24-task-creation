@@ -85,7 +85,7 @@ async def update_deal(deal_id):
 	  "id": deal_id,
 	  "useOriginalUfNames": "Y", 
 	  "fields": {
-		  "UF_CRM_1782802335": True
+		  "UF_CRM_1782802335": [True]
 	  }
   }
   response = bitrix_token.call_method(api_method="crm.item.update", params=fields)
