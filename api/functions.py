@@ -95,13 +95,13 @@ async def set_preparations(preparation_list, preparations, deal_id, task_id):
   preparations = preparations + deal_services
   for service in deal_services:
 	  rows.append({
-	      "PRODUCT_ID": service["id"],
+	      "PRODUCT_ID": service["productId"],
 	      "QUANTITY": service["quantity"],
 	      "PRICE": 0
 	  })
   for preparation in preparations:
 	  rows.append({
-	      "PRODUCT_ID": preparation["id"],
+	      "PRODUCT_ID": preparation["productId"],
 	      "QUANTITY": preparation["quantity"],
 	      "PRICE": 0
 	  })
