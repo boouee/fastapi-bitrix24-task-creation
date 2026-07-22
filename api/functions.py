@@ -110,7 +110,8 @@ async def set_preparations(preparations, deal_id, task_id):
 	"rows": rows	  
   }
   response = bitrix_token.call_method(api_method="crm.deal.productrows.set", params=fields)
- 
+
+
 async def get_preparations(start): 
   fields = {
 	"start": start,
@@ -118,7 +119,8 @@ async def get_preparations(start):
 		"id",
 		"iblockId",
 		"name",
-		"quantity"
+		"quantity",
+		"price"
 	],
 	"filter": {
 		"active": "Y",
