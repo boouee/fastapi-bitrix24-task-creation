@@ -68,7 +68,7 @@ async def update_preparations(request: Request):
     print(data)   
     preparation_list = await get_preparations(1)
     for preparation in data["orderItems"]:
-      preparation["id"] = next((item for item in preparation_list if item.get("name") == 2), None)["id"]
+      preparation["id"] = next((item for item in preparation_list if item.get("name") == preparation["name"]), None)["id"]
     print(data)
   except Exception as e:
         print(e)
