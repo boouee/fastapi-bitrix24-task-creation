@@ -256,7 +256,7 @@
 
         console.log('Отправляемые данные:', items);
 
-        fetch('https://example.com', {
+        fetch('/api/update_preparations', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ orderItems: items })
