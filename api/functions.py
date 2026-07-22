@@ -48,7 +48,7 @@ async def main(deal_id):
   task_id = await create_task(fields)
   task_description = f"""
   Адрес:
-  {deal_fields["UF_CRM_1782801963621"]}
+  {(deal_fields["UF_CRM_1782801963621"] or "")}
 
   Имя: {(contact_data["NAME"] or "") + " " + (contact_data["SECOND_NAME"] or "") + " " + (contact_data["LAST_NAME"] or "") }
   Телефон: {contact_data["PHONE"][0]["VALUE"]}
