@@ -63,10 +63,14 @@ async def edit_preparations(request: Request):
 
 @app.post("/api/update_preparations")
 async def update_preparations(request: Request):
-  data = await request.json()
-  print(data)   
-  preparation_list = await get_preparations(1)
-  for preparation in data["orderItems"]:
-     preparation["id"] = next((item for item in preparation_list if item.get("name") == 2), None)["id"]
-  print(data)
-                              
+  try:
+    data = await request.json()
+    print(data)   
+    preparation_list = await get_preparations(1)
+    for preparation in data["orderItems"]:
+      preparation["id"] = next((item for item in preparation_list if item.get("name") == 2), None)["id"]
+    print(data)
+  except Exception as e:
+        print(e)
+        traceback.print_exc()
+        return e                            
