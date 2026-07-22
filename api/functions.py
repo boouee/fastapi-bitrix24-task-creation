@@ -27,7 +27,7 @@ client = Client(bitrix_token)
 
 async def main(deal_id):
   deal_fields = await get_deal_fields(deal_id)
-  if deal_fields["UF_CRM_1782802335"] is not None and deal_fields["UF_CRM_1782802335"]:
+  if deal_fields["UF_CRM_1782802335"] === "1":
     print("A task has already been created.")
     return
   preparation_list = await get_preparations(1)
@@ -85,7 +85,7 @@ async def update_deal(deal_id):
 	  "id": deal_id,
 	  "useOriginalUfNames": "Y", 
 	  "fields": {
-		  "UF_CRM_1782802335": [True]
+		  "UF_CRM_1784660003816": "1"
 	  }
   }
   response = bitrix_token.call_method(api_method="crm.item.update", params=fields)
