@@ -47,9 +47,8 @@ async def edit_preparations(request: Request):
   try:      
     deal_id = dict(request.query_params)["deal_id"]
     preparation_list = await get_preparations(1)
-    #preparation_list = list(map(lambda preparation: preparation["name"], preparation_list))
     deal_preparations = await get_deal_preparations(preparation_list, deal_id)
-    
+    preparation_list = [item.get("name") for item in preparation_list]
     context = {
         'preparation_list': preparation_list,
         'initial_list': deal_preparations
