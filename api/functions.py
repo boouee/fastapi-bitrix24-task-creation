@@ -92,13 +92,16 @@ async def update_deal(deal_id):
 async def set_task_preparations(preparation_list, deal_id, task_id):
   deal_preparations = await get_deal_preparations(preparation_list, deal_id)
   task_preparations = list(map(lambda preparation: preparation["name"], deal_preparations))
-  task_preparations = "/n".join(task_preparations)
+  task_preparations = "\n".join(task_preparations)
   task_data = await get_task(task_id)
   task_description = task_data["description"]
   print(task_description)
   task_description = re.search(r".*Препараты.*?\n", task_description, re.S).group()
   print(task_description)
-	
+  task_description = task_description + task_preparations
+  fields = {"id": task_id, "fields": { "DESCRIPTION": description } }
+  response = bitrix_token.call_method(api_method="tasks.task.update", params=fields)
+ 
 async def set_deal_preparations(preparation_list, preparations, deal_id, task_id):
   deal_services = await get_deal_services(preparation_list, deal_id)
   rows = []
@@ -204,3 +207,6 @@ async def get_task(task_id):
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.get", params=fields)
   return response["result"]["task"]
+
+async def update_task_description(task_id, description):
+	
