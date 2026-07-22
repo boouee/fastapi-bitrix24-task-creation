@@ -89,7 +89,7 @@ async def update_deal(deal_id):
   }
   response = bitrix_token.call_method(api_method="crm.item.update", params=fields)
 
-async def set_preparations(preparations, deal_id, task_id):
+async def set_preparations(preparation_list, preparations, deal_id, task_id):
   deal_services = await get_deal_services(deal_id)
   rows = []
   preparations = preparations + deal_services
