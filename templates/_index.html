@@ -255,11 +255,11 @@
         }
 
         console.log('Отправляемые данные:', items);
-
+        const params = new URLSearchParams(window.location.search);
         fetch('/api/update_preparations', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderItems: items })
+            body: JSON.stringify({ deal_id: params.get('deal_id'), task_id: params.get('task_id'), orderItems: items })
         })
         .then(response => response.ok ? alert('Данные успешно сохранены!') : alert('Ошибка при сохранении.'))
         .catch(error => alert('Не удалось связаться с сервером.'));
