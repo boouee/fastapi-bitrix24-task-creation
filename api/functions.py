@@ -43,9 +43,9 @@ async def main(deal_id):
 	  "RESPONSIBLE_ID": deal_fields["UF_CRM_1782853296"],
 	  "DEADLINE": deal_fields["UF_CRM_1782801843799"],
 	  "UF_CRM_TASK": [f"D_{deal_id}"],
-	  
+	  "TASK_CONTROL": "Y"
   }
-  await create_task(fields)
+  task_id = await create_task(fields)
   task_description = f"""
   Адрес:
   {deal_fields["UF_CRM_1782801963621"]}
@@ -53,9 +53,10 @@ async def main(deal_id):
   Имя: {(contact_data["NAME"] or "") + " " + (contact_data["SECOND_NAME"] or "") + " " + (contact_data["LAST_NAME"] or "") }
   Телефон: {contact_data["PHONE"][0]["VALUE"]}
 
-  Препараты (изменить: ):
+  Препараты (изменить: https://fastapi-bitrix24-task-creation-one.vercel.app/api/edit_preparations?deal_id={deal_id}&task_id={task_id}):
   {task_preparations}
   """
+  await update_task_description(task_id, task_description)
   await update_deal(deal_id)
 	
 async def get_deal_fields(deal_id):
@@ -69,12 +70,12 @@ async def get_contact_data(contact_id):
   response = bitrix_token.call_method(api_method="crm.contact.get", params=fields)
   return response["result"]
 	
-async def create_task(fields):
-  
+async def create_task(fields):  
   bitrix_response = client.tasks.task.add(fields=fields).response
   result = bitrix_response.result
   print(result)
-
+  return result["task"]["id"]
+	
 async def send_notification(client, deal):
   ...
 
@@ -99,6 +100,7 @@ async def set_task_preparations(preparation_list, deal_id, task_id):
   print(task_description)
   task_description = task_description + task_preparations
   await update_task_description(task_id, task_description)
+
 async def set_deal_preparations(preparation_list, preparations, deal_id, task_id):
   deal_services = await get_deal_services(preparation_list, deal_id)
   rows = []
@@ -120,7 +122,6 @@ async def set_deal_preparations(preparation_list, preparations, deal_id, task_id
 	"rows": rows	  
   }
   response = bitrix_token.call_method(api_method="crm.deal.productrows.set", params=fields)
-
 
 async def get_preparations(start): 
   fields = {
