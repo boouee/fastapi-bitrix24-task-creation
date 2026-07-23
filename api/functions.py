@@ -35,7 +35,7 @@ async def main(deal_id):
   deal_services = await get_deal_services(preparation_list, deal_id)
   deal_services = list(map(lambda preparation: preparation["name"], deal_services))
   contact_data = await get_contact_data(deal_fields["CONTACT_ID"])
-  task_preparations = list(map(lambda preparation: preparation["name"], deal_preparations))
+  task_preparations = list(map(lambda preparation: f"{preparation["name"]}: {preparation["quantity"]}", deal_preparations))
   task_preparations = "\n".join(task_preparations)
   print("hello there")
   fields = {
@@ -92,7 +92,7 @@ async def update_deal(deal_id):
 
 async def set_task_preparations(preparation_list, deal_id, task_id):
   deal_preparations = await get_deal_preparations(preparation_list, deal_id)
-  task_preparations = list(map(lambda preparation: preparation["name"], deal_preparations))
+  task_preparations = list(map(lambda preparation: f"{preparation["name"]}: {preparation["quantity"]}", deal_preparations))
   task_preparations = "\n".join(task_preparations)
   task_data = await get_task(task_id)
   task_description = task_data["description"]
