@@ -37,7 +37,7 @@ async def main(deal_id):
   contact_data = await get_contact_data(deal_fields["CONTACT_ID"])
   task_preparations = list(map(lambda preparation: preparation["name"], deal_preparations))
   task_preparations = "\n".join(task_preparations)
-  print("hello")
+  print("hello there")
   fields = {
 	  "TITLE": (", ".join(deal_services) or "Задача"),
 	  "RESPONSIBLE_ID": deal_fields["UF_CRM_1782853296"],
