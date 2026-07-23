@@ -205,7 +205,7 @@ async def update_task_description(preparations, task_id):
   response = bitrix_token.call_method(api_method="tasks.task.update", params=fields)
 
 async def get_task(task_id):
-  fields = {"taskId": task_id}
+  fields = {"ID": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.get", params=fields)
   return response["result"]["task"]
 
