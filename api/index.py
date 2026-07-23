@@ -44,9 +44,12 @@ async def task_complete_handler(request: Request):
 async def edit_preparations(request: Request):
   try:      
     deal_id = dict(request.query_params)["deal_id"]
+    print("DEAL: ", deal_id)
     preparation_list = await get_preparations(1)
     deal_preparations = await get_deal_preparations(preparation_list, deal_id)
     preparation_list = [item.get("name") for item in preparation_list]
+    print("PREP. LIST: ", preparation_list)
+    print("DEAL PREPS: ", deal_preparations)
     context = {
         'preparation_list': preparation_list,
         'initial_list': deal_preparations
