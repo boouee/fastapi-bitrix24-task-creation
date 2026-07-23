@@ -7,7 +7,7 @@ import multipart
 import re
 import traceback
 from urllib.parse import unquote, urlparse
-from api.functions import main, get_preparations, get_deal_preparations, set_deal_preparations, set_task_preparations
+from api.functions import main, get_preparations, get_deal_preparations, set_deal_preparations, set_task_preparations, check_task
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
@@ -29,14 +29,12 @@ async def deal_in_stage_handler(request: Request):
 @app.post('/api/task_complete')
 async def task_complete_handler(request: Request):
     try:
-        body = await request.body()
-        print(unquote(body))
         form_data = await request.form()
         form_data = dict(form_data)
         print(form_data)
-        print(form_data["data[FIELDS_AFTER][ID]"])
-        #result = await collab_created_handler(form_data["data[FIELDS][ID]"])
-        #return result
+        task_id = form_data["data[FIELDS_AFTER][ID]"]
+        print(task_id)
+        await check_task(task_id)
     except Exception as e:
         print(e)
         traceback.print_exc()
