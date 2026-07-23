@@ -74,7 +74,7 @@ async def create_task(fields):
   bitrix_response = client.tasks.task.add(fields=fields).response
   result = bitrix_response.result
   print(result)
-  return result["task"]["id"]
+  return int(result["task"]["id"])
 	
 async def send_notification(client, deal):
   ...
