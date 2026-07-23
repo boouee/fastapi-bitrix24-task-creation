@@ -184,12 +184,15 @@ async def get_deal_services(preparation_list, deal_id):
   return products
 
 async def check_task(task_id):
+  task_data = await get_task(task_id)
+  if task_data["status"] != "4":
+	  return
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.result.list", params=fields)
   if response["result"]["text"] and response["result"]["files"]:
-	  return True
+	  return 
   else:
-	  return False 
+	  await return_task_to_work(task_id)
 
 async def return_task_to_work(task_id):
   fields = {"taskId": task_id}
@@ -198,8 +201,7 @@ async def return_task_to_work(task_id):
 async def update_task_description(preparations, task_id):
   task_data = await get_task(task_id)
   task_description = task_data["description"]
-  task
-  fields = {"taskId": task_id, "fields": { "description": description } }
+  fields = {"taskId": task_id, "fields": { "DESCRIPTION": description } }
   response = bitrix_token.call_method(api_method="tasks.task.update", params=fields)
 
 async def get_task(task_id):
@@ -207,7 +209,4 @@ async def get_task(task_id):
   response = bitrix_token.call_method(api_method="tasks.task.get", params=fields)
   return response["result"]["task"]
 
-async def update_task_description(task_id, description):
-  fields = {"id": task_id, "fields": { "DESCRIPTION": description } }
-  response = bitrix_token.call_method(api_method="tasks.task.update", params=fields)
-	  
+
