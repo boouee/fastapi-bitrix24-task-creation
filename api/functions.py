@@ -122,8 +122,10 @@ async def set_deal_preparations(preparation_list, preparations, deal_id, task_id
 	"id": deal_id,
 	"rows": rows	  
   }
+  print(fields)
   response = bitrix_token.call_method(api_method="crm.deal.productrows.set", params=fields)
-
+  print(response)
+	
 async def get_preparations(start): 
   fields = {
 	"start": start,
@@ -210,7 +212,6 @@ async def update_task_description(task_id, description):
 
 async def get_task(task_id):
   fields = {"taskId": int(task_id)}
-  #print("FIELDS: " + fields)
   response = bitrix_token.call_method(api_method="tasks.task.get", params=fields)
   return response["result"]["task"]
 
