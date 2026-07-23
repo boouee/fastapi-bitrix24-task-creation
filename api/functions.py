@@ -193,10 +193,10 @@ async def check_task(task_id):
   #print(response["result"]["task"]["text"])
   #print(response["result"]["task"]["files"])
   if response["result"]:
-    if response["result"][0]["text"] and response["result"][0]["files"]:
-	  return 
+	  if response["result"][0]["text"] and response["result"][0]["files"]:
+		  return 
   else:
-    await return_task_to_work(task_id)
+	  await return_task_to_work(task_id)
 
 async def return_task_to_work(task_id):
   fields = {"taskId": task_id}
