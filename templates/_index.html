@@ -169,7 +169,7 @@
 
     // Изначально выбранные элементы
     const initialItems = {{ initial_list | tojson }};
-
+    alert(initialItems);
     function getCurrentlySelected() {
         const selects = document.querySelectorAll('.item-select');
         return Array.from(selects).map(select => select.value).filter(val => val !== '');
