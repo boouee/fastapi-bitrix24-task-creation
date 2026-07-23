@@ -198,7 +198,7 @@ async def return_task_to_work(task_id):
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.disapprove", params=fields)
 
-async def update_task_description(preparations, task_id):
+async def update_task_description(task_id, description):
   task_data = await get_task(task_id)
   task_description = task_data["description"]
   fields = {"taskId": task_id, "fields": { "DESCRIPTION": description } }
