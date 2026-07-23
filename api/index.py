@@ -34,7 +34,7 @@ async def task_complete_handler(request: Request):
         print(form_data)
         task_id = form_data["data[FIELDS_AFTER][ID]"]
         print(task_id)
-        await check_task(task_id)
+        await check_task(int(task_id))
     except Exception as e:
         print(e)
         traceback.print_exc()
