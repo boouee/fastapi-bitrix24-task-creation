@@ -189,6 +189,8 @@ async def check_task(task_id):
 	  return
   fields = {"taskId": task_id}
   response = bitrix_token.call_method(api_method="tasks.task.result.list", params=fields)
+  print(response["result"]["text"])
+  print(response["result"]["files"])
   if response["result"]["text"] and response["result"]["files"]:
 	  return 
   else:
